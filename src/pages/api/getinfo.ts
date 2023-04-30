@@ -13,7 +13,9 @@ export default async function handler (
       return res.status(200).json({ ok: false, ...data, err })
     }
 
-    return res.status(200).json(data)
+    const { uris } = data
+
+    return res.status(200).json({ ok: true , data: uris })
   } catch(err) { 
     console.error(err)
     res.status(500).end() 

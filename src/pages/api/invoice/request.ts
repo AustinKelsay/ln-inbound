@@ -43,7 +43,7 @@ async function handler(
       return res.status(200).json({ ok: false, err: 'Amount exceeds max channel size!' })
     }
 
-    const charge = (amt * fee_rate) + base_fee
+    const charge = Math.floor(amt * fee_rate) + base_fee
 
     const memo = `${pubkey} paid for a channel`
 
