@@ -51,7 +51,9 @@ const Connect = () => {
   };
 
   return (
-    <main className={`flex flex-col items-center justify-start p-20 w-full`}>
+    <main
+      className={`flex flex-col items-center justify-start p-20 w-full py-5`}
+    >
       <form onSubmit={handleSubmit} className={`w-full`}>
         <VStack spacing={4}>
           <FormControl id="node-pubkey">

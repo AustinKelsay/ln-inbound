@@ -64,7 +64,7 @@ const Amount = () => {
 
   return (
     <>
-      <Box w={"100%"} className="px-20 pt-20">
+      <Box w={"100%"} className="px-20 pt-15">
         <Slider
           aria-label="slider-ex-6"
           defaultValue={20000}

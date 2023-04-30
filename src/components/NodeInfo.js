@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@chakra-ui/react";
+import { Button, Box, Code, Text } from "@chakra-ui/react";
 
 const NodeInfo = () => {
   const [nodeInfo, setNodeInfo] = useState(null);
@@ -27,19 +27,21 @@ const NodeInfo = () => {
     <div className="text-xl">
       {nodeInfo ? (
         nodeInfo.map((info, index) => (
-          <div className="w-2/4 m-auto" key={info}>
-            <span className="font-bold">Node URI</span>
-            <br />
-            {info}
+          <Box className="w-3/4 m-auto" key={info}>
+            <Text fontSize="lg" fontWeight="bold">
+              Add our node as a peer then check the connection status below
+            </Text>
+            <Code display="block" whiteSpace="pre-wrap" p={2} my={2}>
+              {info}
+            </Code>
             <Button
               size="sm"
               colorScheme="blue"
               onClick={() => copyToClipboard(info)}
-              mt={1}
             >
               Copy
             </Button>
-          </div>
+          </Box>
         ))
       ) : (
         <div>Loading...</div>
