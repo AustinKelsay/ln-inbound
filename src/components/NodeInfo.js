@@ -17,7 +17,7 @@ const NodeInfo = () => {
     <div className="text-xl">
       {nodeInfo ? (
         nodeInfo.map((info) => (
-          <div className="max-w-full m-auto" key={info}>
+          <div className="w-2/4 m-auto" key={info}>
             <span className="font-bold">Node URI</span>
             <br />
             {info}
