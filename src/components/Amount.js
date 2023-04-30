@@ -8,21 +8,31 @@ import {
   SliderThumb,
   SliderMark,
 } from "@chakra-ui/react";
+import { useSelector, useDispatch } from "react-redux";
+import { setAmount, setPolling } from "@/redux/rootReducer";
 
-const Amount = ({ invoicePolling, setInvoicePolling }) => {
-  const [sliderValue, setSliderValue] = useState(50);
+const Amount = () => {
+  const [sliderAmount, setSliderAmount] = useState(0);
+  const invoicePolling = useSelector((state) => state.polling);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setInvoicePolling(true);
+    dispatch(setPolling(true));
+
+    dispatch(setAmount(sliderAmount));
   };
 
   return (
     <Box w={"100%"}>
-      <Slider aria-label="slider-ex-6" onChange={(val) => setSliderValue(val)}>
+      <Slider
+        aria-label="slider-ex-6"
+        value={sliderAmount}
+        onChange={(val) => setSliderAmount(val)}
+      >
         <SliderMark
-          value={sliderValue}
+          value={sliderAmount}
           textAlign="center"
           bg="blue.500"
           color="white"
@@ -30,7 +40,7 @@ const Amount = ({ invoicePolling, setInvoicePolling }) => {
           ml="-5"
           w="12"
         >
-          {sliderValue}%
+          {sliderAmount}
         </SliderMark>
         <SliderTrack>
           <SliderFilledTrack />
