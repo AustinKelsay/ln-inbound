@@ -28,7 +28,7 @@ const NodeInfo = () => {
       {nodeInfo ? (
         nodeInfo.map((info, index) => (
           <Box className="w-3/4 m-auto" key={info}>
-            <Text fontSize="lg" fontWeight="bold">
+            <Text fontSize="lg">
               Step 1: Add our node as a peer
             </Text>
             <Code display="block" whiteSpace="pre-wrap" p={2} my={2}>
