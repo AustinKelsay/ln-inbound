@@ -21,5 +21,12 @@
 html body {
   color: rgb(var(--foreground-rgb));
   font-family: "Source Code Pro", monospace;
-  background-color: #1a202c;
+  animation: color-change 45s infinite;
+}
+
+
+@keyframes color-change {
+  0% { background-color: #02a0b5; }
+  50% { background-color: #02b58e; }
+  100% { background-color: #02a0b5; }
 }

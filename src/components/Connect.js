@@ -49,8 +49,8 @@ const Connect = () => {
   };
 
   return (
-    <main className={`flex flex-col items-center justify-start p-24`}>
-      <form onSubmit={handleSubmit}>
+    <main className={`flex flex-col items-center justify-start p-20 w-full`}>
+      <form onSubmit={handleSubmit} className={`w-full`}>
         <VStack spacing={4}>
           <FormControl id="node-pubkey">
             <FormLabel>Node Pubkey</FormLabel>
@@ -60,7 +60,7 @@ const Connect = () => {
               onChange={(e) => setNodePubkey(e.target.value)}
             />
           </FormControl>
-          <Button type="submit" colorScheme="blue">
+          <Button type="submit" colorScheme="blue" style={{marginTop: '5rem'}}>
             Connect
           </Button>
           {message && (
