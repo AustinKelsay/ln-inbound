@@ -95,9 +95,9 @@ const Amount = () => {
   };
 
   const getTotal = () => {
-    // The total is the base fee times the fee rate but make sure it is not a decimal number, round up if it is
+    // total = baseFee + (channelSize * feeRate)
     if (baseFee && feeRate) {
-      const total = baseFee * feeRate;
+      const total = baseFee + sliderValue * feeRate;
       if (total % 1 !== 0) {
         return Math.ceil(total);
       }
@@ -139,7 +139,7 @@ const Amount = () => {
         style={{ display: "flex", marginTop: "1rem" }}
       >
         <Tooltip
-          label="The total cost is calculated as the base fee times the fee rate, rounded up to the nearest integer."
+          label="The total cost is calculated as the base fee + the channel size * the fee rate (rounded up to the nearest integer)"
           fontSize="md"
           placement="top"
           hasArrow
