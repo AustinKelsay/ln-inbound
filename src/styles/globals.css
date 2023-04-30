@@ -24,9 +24,14 @@ html body {
   animation: color-change 45s infinite;
 }
 
-
 @keyframes color-change {
-  0% { background-color: #02a0b5; }
-  50% { background-color: #02b58e; }
-  100% { background-color: #02a0b5; }
+  0% {
+    background-color: #01656a;
+  }
+  50% {
+    background-color: #015a4b;
+  }
+  100% {
+    background-color: #01656a;
+  }
 }

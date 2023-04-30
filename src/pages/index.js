@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Connect from "@/components/Connect";
 import Amount from "@/components/Amount";
 import Invoice from "@/components/Invoice";
+import Trail from "@/components/Trail";
+import PendingChannel from "@/components/PendingChannel";
 import { useSelector } from "react-redux";
 import Trail from "@/components/Trail"
 import NodeInfo from "@/components/NodeInfo"
@@ -14,17 +16,17 @@ const mockNodeInfo = {
     ],  
 }
 
-
 export default function Home() {
   const invoicePolling = useSelector((state) => state.polling);
-  
-  const [open, setOpen] = useState(false)
+  const txid = useSelector((state) => state.txid);
+
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     setTimeout(() => {
-      setOpen(true)
-    }, 250)
-  }, [])
+      setOpen(true);
+    }, 250);
+  }, []);
 
   return (
     <main
@@ -35,10 +37,16 @@ export default function Home() {
           <span className={`text-5xl font-bold`}>LN Inbound</span>
         </Trail>
       </div> 
+      
       <NodeInfo {...mockNodeInfo} />
+      
       <Connect />
+      
       <Amount />
+
       {invoicePolling && <Invoice />}
+
+      {txid && !invoicePolling && <PendingChannel />}
     </main>
   );
 }
