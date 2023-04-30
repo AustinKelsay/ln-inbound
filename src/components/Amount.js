@@ -9,6 +9,9 @@ import {
   SliderMark,
   Tooltip,
   IconButton,
+  Spinner,
+  Center,
+  Text,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -19,6 +22,8 @@ const Amount = () => {
   const [maxAmount, setMaxAmount] = useState(null);
   const [baseFee, setBaseFee] = useState(null);
   const [feeRate, setFeeRate] = useState(null);
+  const [total, setTotal] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const invoicePolling = useSelector((state) => state.polling);
 
@@ -53,19 +58,26 @@ const Amount = () => {
   useEffect(() => {
     const fetchRates = async () => {
       try {
+        setIsLoading(true);
         const response = await fetch(`/api/getrates`);
         const data = await response.json();
         console.log(data);
 
         if (data?.data) {
           setMaxAmount(data.data.max_size);
-
           setBaseFee(data.data.base_fee);
-
           setFeeRate(data.data.fee_rate);
+
+          // Calculate the total here
+          const calculatedTotal =
+            data.data.base_fee + 20000 * data.data.fee_rate;
+          setTotal(Math.ceil(calculatedTotal));
+
+          setIsLoading(false);
         }
       } catch (error) {
         console.log(error);
+        setIsLoading(false);
       }
     };
     fetchRates();
@@ -105,6 +117,21 @@ const Amount = () => {
     }
     return null;
   };
+
+  if (isLoading) {
+    return (
+      <Center flexDirection="column" alignItems="center">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
+        <Text mt={2}>Loading...</Text>
+      </Center>
+    );
+  }
 
   return (
     <>
@@ -153,7 +180,7 @@ const Amount = () => {
         </Tooltip>
         <p>Total</p>
         &nbsp;
-        <p>{getTotal()} sats</p>
+        <p>{total} sats</p>
       </div>
       <Box display="flex" justifyContent="center" mt={4}>
         <Button
