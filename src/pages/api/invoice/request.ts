@@ -1,9 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { normalizeParams }  from '@/lib/utils'
-import { PubModel }         from '@/model/PubSchema'
-import { getCollection }    from '@/lib/controller'
-import { config }           from '@/config'
 import { withSessionRoute } from '@/lib/sessions'
 import { createInvoice }    from '@/lib/lnd'
 
@@ -24,27 +21,16 @@ async function handler(
   if (req.method !== 'GET') res.status(400).end()
 
   // Grab the slug and url from the post body.
-  const { nickname, pubkey, duration } = normalizeParams(req.query)
+  const { pubkey } = normalizeParams(req.query)
 
-  if (
-    nickname === undefined ||
-    pubkey   === undefined ||
-    duration === undefined
-  ) {
+  if (pubkey === undefined) {
     return res.status(200).json({ ok: false, err: 'Invalid request!' })
   }
 
   try {
-    const pubkeys = await getCollection(PubModel),
-          record  = await pubkeys.findOne({ name: nickname })
+    const amount = 10000
 
-    if (record !== null) {
-      return res.status(200).json({ ok: false, err: 'Account already exists!' })
-    }
-
-    const amount = config.sub_cost * Number(duration) * 1000
-
-    const memo = `${nickname}@${config.site_name} for ${duration} months.`
+    const memo = `${pubkey} paid for a channel`
 
     const { ok, data, err } = await createInvoice({ amount, memo })
 
@@ -62,7 +48,7 @@ async function handler(
       return res.status(200).json({ ok: false, err: 'Error fetching invoice from server!' })
     }
 
-    req.session.pending = { hash, amount, nickname, pubkey, duration, receipt: payment_request }
+    req.session.pending = { hash, amount, pubkey, receipt: payment_request }
 
     await req.session.save()
 

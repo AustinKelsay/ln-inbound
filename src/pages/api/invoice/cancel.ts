@@ -15,7 +15,7 @@ async function handler(
     const { pending } = req.session
 
     if (pending === undefined) {
-      return res.status(200).json({ err: 'Session has expired!' })
+      return res.status(200).json({ ok: false, err: 'Session has expired!' })
     }
 
     const { hash } = pending ?? {}
@@ -24,9 +24,9 @@ async function handler(
 
     req.session.destroy()
 
-    return res.status(200).json({ success: true })
+    return res.status(200).json({ ok: true })
   } catch(err) {
     console.log(err)
-    res.status(200).json({ err: 'Internal server error.' })
+    res.status(200).json({ ok: false, err: 'Internal server error.' })
   }
 }

@@ -855,6 +855,11 @@
   resolved "https://registry.yarnpkg.com/@chakra-ui/visually-hidden/-/visually-hidden-2.0.15.tgz#60df64e0ab97d95fee4e6c61ccabd15fd5ace398"
   integrity sha512-WWULIiucYRBIewHKFA7BssQ2ABLHLVd9lrUo3N3SZgR0u4ZRDDVEUNOy+r+9ruDze8+36dGbN9wsN1IdELtdOw==
 
+"@cmdcode/buff-utils@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@cmdcode/buff-utils/-/buff-utils-1.7.1.tgz#00333fc450bc2a9b8aaec5dda608a2965e013ce5"
+  integrity sha512-1YBCnqIZtWEmd5Qi8Kbs1T8SQUsU6PbZzCEa8CJYmT9UfxS/nJsd1v8bwl9sVYeUYlJHIbTx6FO9jB3fDXh6tA==
+
 "@emotion/babel-plugin@^11.10.8":
   version "11.10.8"
   resolved "https://registry.yarnpkg.com/@emotion/babel-plugin/-/babel-plugin-11.10.8.tgz#bae325c902937665d00684038fd5294223ef9e1d"

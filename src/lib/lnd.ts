@@ -1,3 +1,4 @@
+import { Buff }   from '@cmdcode/buff-utils'
 import { config } from '@/config'
 
 interface LNDInvoiceCreate {
@@ -32,6 +33,24 @@ export async function getInfo () {
 
 export async function getPeers () {
   return fetchEndpoint('/v1/peers')
+}
+
+export async function getChannels () {
+  return fetchEndpoint('/v1/channels')
+}
+
+export async function openChannel (
+  pubkey  : string, 
+  amount  : number,
+  options : any = {} 
+) {
+  const b64 = Buff.hex(pubkey).b64url
+  const opt = {
+    method  : 'POST',
+    body    : JSON.stringify({ node_pubkey: b64, local_funding_amount: amount, ...options })
+  }
+
+  return fetchEndpoint('/v1/channels', opt)
 }
 
 export async function addPeer (
