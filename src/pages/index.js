@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import Connect from "@/components/Connect";
 import Amount from "@/components/Amount";
 import Invoice from "@/components/Invoice";
-import { useSelector } from "react-redux";
 import Trail from "@/components/Trail";
+import PendingChannel from "@/components/PendingChannel";
 import NodeInfo from "@/components/NodeInfo";
+import { useSelector } from "react-redux";
 
 const mockNodeInfo = {
   identity_pubkey:
@@ -52,6 +53,8 @@ export default function Home() {
       )}
 
       {invoicePolling && <Invoice />}
+
+      {txid && !invoicePolling && <PendingChannel />}
     </main>
   );
 }
