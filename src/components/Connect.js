@@ -7,42 +7,42 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useSelector, useDispatch } from "react-redux";
+import { setConnected } from "@/redux/rootReducer";
 
 const Connect = () => {
   const [nodePubkey, setNodePubkey] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setMessage("");
+    setMessageType("");
+
     try {
-      // Replace with your API endpoint
-      //   const response = await fetch("https://your-api-endpoint.com", {
-      //     method: "POST",
-      //     body: JSON.stringify({ nodePubkey }),
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //   });
+      const response = await fetch(`/api/peer/status?pubkey=${nodePubkey}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-      const response = {
-        ok: true,
-      };
+      const res = await response.json();
 
-      if (response.ok) {
-        setMessage("Connection successful!");
+      if (res?.data?.pub_key) {
+        setMessage("Connected");
         setMessageType("success");
+
+        dispatch(setConnected(true));
       } else {
-        setMessage("Connection failed");
+        setMessage("Not connected");
         setMessageType("error");
       }
-
-      setTimeout(() => {
-        setMessage("");
-        setMessageType("");
-      }, 6000);
     } catch (error) {
+      console.log(error);
       setMessage("An error occurred. Please try again.");
       setMessageType("error");
     }
@@ -61,7 +61,7 @@ const Connect = () => {
             />
           </FormControl>
           <Button type="submit" colorScheme="blue">
-            Connect
+            Check connection status
           </Button>
           {message && (
             <Text

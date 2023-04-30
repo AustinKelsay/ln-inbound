@@ -18,6 +18,7 @@ const mockNodeInfo = {
 
 export default function Home() {
   const invoicePolling = useSelector((state) => state.polling);
+  const connected = useSelector((state) => state.connected);
   const txid = useSelector((state) => state.txid);
 
   const [open, setOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function Home() {
       {!invoicePolling && (
         <>
           <Connect />
-          <Amount />
+          {connected && <Amount />}
         </>
       )}
 
