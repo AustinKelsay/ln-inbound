@@ -21,15 +21,13 @@ async function handler(
   if (req.method !== 'GET') res.status(400).end()
 
   // Grab the slug and url from the post body.
-  const { pubkey } = normalizeParams(req.query)
+  const { pubkey, amount = '25000' } = normalizeParams(req.query)
 
   if (pubkey === undefined) {
     return res.status(200).json({ ok: false, err: 'Invalid request!' })
   }
 
   try {
-    const amount = 10000
-
     const memo = `${pubkey} paid for a channel`
 
     const { ok, data, err } = await createInvoice({ amount, memo })

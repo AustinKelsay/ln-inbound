@@ -15,7 +15,7 @@ interface LNDInvoiceCreate {
 }
 
 interface createInvoice {
-  amount : number
+  amount : string
   hash  ?: string
   memo  ?: string
 }
@@ -68,7 +68,7 @@ export async function addPeer (
 export async function createInvoice ({
   amount, hash, memo
 } : createInvoice ) {
-  const body : Record<string, string> = { value_msat: String(amount) }
+  const body : Record<string, string> = { value_msat: amount }
   if (hash !== undefined) body.description_hash = hash
   if (memo !== undefined) body.memo = memo
   const opt = {
