@@ -48,8 +48,9 @@ async function handler(
       return res.status(200).json({ ok: false, err: 'Error fetching invoice from server!' })
     }
 
-    req.session.pending = { hash, amount, pubkey, receipt: payment_request }
-
+    req.session.pubkey  = pubkey
+    req.session.invoice = { paid: false, hash, amount, receipt: payment_request }
+    
     await req.session.save()
 
     if (payment_request === undefined) {

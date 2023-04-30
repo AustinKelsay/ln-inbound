@@ -8,10 +8,14 @@ export default async function handler (
 ) {
   
   try {
-    const { pubkey } = req.session
+    const { pubkey, invoice } = req.session
 
-    if (pubkey === undefined) {
+    if (pubkey === undefined || invoice === undefined) {
       return res.status(200).json({ ok: false, err: 'Session has expired!' })
+    }
+
+    if (!invoice.paid) {
+      return res.status(200).json({ ok: false, err: 'Invoice has not been paid!' })
     }
 
     const amount = 25000
@@ -22,9 +26,13 @@ export default async function handler (
       return res.status(status).json({ ok: false, ...data, err })
     }
 
-    const {funding_txid_bytes, output_index } = data
+    const { funding_txid_bytes, output_index } = data
+    const opentx = { txid: funding_txid_bytes, vout: output_index }
 
-    return res.status(200).json({ ok: true, data: { txid: funding_txid_bytes, vout: output_index } })
+    req.session.opentx = opentx
+    await req.session.save()
+
+    return res.status(200).json({ ok: true, data: opentx })
   } catch(err) { 
     console.error('err:', err)
     res.status(500).end()

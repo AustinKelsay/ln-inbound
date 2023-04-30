@@ -1,24 +1,24 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { lookupInvoice }    from '@/lib/lnd'
+import { lookupInvoice, openChannel } from '@/lib/lnd'
 import { withSessionRoute } from '@/lib/sessions'
 
 export default withSessionRoute(handler)
 
-async function handler(
+async function handler (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method !== 'GET') res.status(400).end()
 
   try {
-    const { pending } = req.session
+    const { pubkey, invoice } = req.session
 
-    if (pending === undefined) {
+    if (pubkey === undefined || invoice === undefined) {
       return res.status(200).json({ ok: false, err: 'Session has expired!' })
     }
 
-    const { hash } = pending ?? {}
+    const { hash } = invoice ?? {}
 
     const { ok, data, err } = await lookupInvoice(hash)
 
@@ -30,7 +30,12 @@ async function handler(
       return res.status(200).json({ ok: false, err: 'Invoice not found!' })
     }
 
-    return res.status(200).json({ ok: false, data })
+    if (data.settled) {
+      req.session.invoice.paid = true
+      await req.session.save()
+    }
+
+    return res.status(200).json({ ok: true, data })
 
   } catch(err) {
     console.error(err)

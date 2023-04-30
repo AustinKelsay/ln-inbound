@@ -12,13 +12,13 @@ async function handler(
   if (req.method !== 'GET') res.status(400).end()
 
   try {
-    const { pending } = req.session
+    const { invoice } = req.session
 
-    if (pending === undefined) {
+    if (invoice === undefined) {
       return res.status(200).json({ ok: false, err: 'Session has expired!' })
     }
 
-    const { hash } = pending ?? {}
+    const { hash } = invoice ?? {}
 
     await cancelInvoice(hash)
 
