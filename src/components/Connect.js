@@ -75,7 +75,7 @@ const Connect = () => {
       <form onSubmit={handleSubmit} className={`w-full`}>
         <VStack spacing={4}>
           <FormControl id="node-pubkey">
-            <FormLabel>Node Pubkey</FormLabel>
+            <FormLabel>Step 2: Enter your node&apos;s pubkey</FormLabel>
             <Input
               type="text"
               value={nodePubkey}

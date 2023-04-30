@@ -33,8 +33,6 @@ async function handler (
 
     channel = channels.filter((e : any) => e.remote_pubkey === pubkey)[0] ?? undefined
 
-    console.log('channel:', channel)
-    
     if (channel === undefined) {
       const { ok, data, err } = await getPendingChannels()
 
@@ -54,13 +52,9 @@ async function handler (
       if (channel !== undefined) {
         channel = channel.channel
       }
-
-      console.log('channel:', channel)
     }
 
     if (channel !== undefined) {
-
-      console.log('ch:', channel)
       channel = channel.channel_point.split(':')[0]
     }
 
