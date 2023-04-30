@@ -6,6 +6,15 @@ import { useSelector } from "react-redux";
 
 export default function Home() {
   const invoicePolling = useSelector((state) => state.polling);
+  
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setOpen(true)
+    }, 300)
+  }, [])
+
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-even p-12`}
