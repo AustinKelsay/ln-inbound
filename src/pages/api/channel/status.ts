@@ -51,10 +51,20 @@ async function handler (
 
       channel = channels.filter((e : any) => e.channel.remote_node_pub === pubkey)[0] ?? undefined
 
+      if (channel !== undefined) {
+        channel = channel.channel
+      }
+
       console.log('channel:', channel)
     }
 
-    return res.status(200).json({ok: true, data: channel.channel_point.split(':')[0] })
+    if (channel !== undefined) {
+
+      console.log('ch:', channel)
+      channel = channel.channel_point.split(':')[0]
+    }
+
+    return res.status(200).json({ok: true, data: channel })
   } catch(err) { 
     console.error(err)
     res.status(500).end() 
