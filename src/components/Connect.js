@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -8,13 +8,31 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { setConnected, setPubKey } from "@/redux/rootReducer";
+import { setConnected, setPubKey, setTxId } from "@/redux/rootReducer";
 
 const Connect = () => {
   const [nodePubkey, setNodePubkey] = useState("");
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const channelStatus = async () => {
+      try {
+        const response = await fetch("/api/channel/status");
+        const data = await response.json();
+        console.log("here", data);
+
+        if (data.ok && data.data && data.data.active) {
+          dispatch(setTxId(data.data.channel_point.split(":")[0]));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    channelStatus();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
