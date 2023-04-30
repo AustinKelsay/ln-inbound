@@ -24,8 +24,7 @@ const Amount = () => {
     dispatch(setPolling(true));
 
     dispatch(setAmount(sliderValue));
-  }
-
+  };
 
   const leftLabelStyles = {
     mt: "4",
@@ -40,37 +39,45 @@ const Amount = () => {
   };
 
   const addCommas = (num) => {
-    const asString = num.toString()
+    const asString = num.toString();
 
-    return asString.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-  }
+    return asString.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  };
 
   return (
     <>
-    <Box w={"100%"} className="px-20 pt-20">
-      <Slider aria-label="slider-ex-6"  defaultValue={10000} min={10000} max={100000} step={10} onChange={(val) => setSliderValue(val)}>
-        <SliderMark value={10000} {...leftLabelStyles}>
-          10,000
-        </SliderMark>
-        <SliderMark value={100000} {...rightLabelStyles}>
-          100,000
-        </SliderMark>
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb boxSize={5}>
-          ⚡️
-        </SliderThumb>
-      </Slider>
-    </Box>
-    <div className={`text-2xl`} style={{display: 'flex', marginTop: '2rem'}}>
-      <div>Sats:</div>
-      &nbsp;
-      <div>{addCommas(sliderValue)}</div>
-    </div>
-    <Box display="flex" justifyContent="center" mt={4}>
+      <Box w={"100%"} className="px-20 pt-20">
+        <Slider
+          aria-label="slider-ex-6"
+          defaultValue={10000}
+          min={10000}
+          max={100000}
+          step={10}
+          onChange={(val) => setSliderValue(val)}
+        >
+          <SliderMark value={10000} {...leftLabelStyles}>
+            10,000
+          </SliderMark>
+          <SliderMark value={100000} {...rightLabelStyles}>
+            100,000
+          </SliderMark>
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb boxSize={5}>⚡️</SliderThumb>
+        </Slider>
+      </Box>
+      <div
+        className={`text-2xl`}
+        style={{ display: "flex", marginTop: "2rem" }}
+      >
+        <div>Sats:</div>
+        &nbsp;
+        <div>{addCommas(sliderValue)}</div>
+      </div>
+      <Box display="flex" justifyContent="center" mt={4}>
         <Button
-          colorScheme="green"
+          colorScheme="blue"
           onClick={handleSubmit}
           isDisabled={invoicePolling}
         >
