@@ -12,7 +12,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { setAmount, setPolling } from "@/redux/rootReducer";
 
 const Amount = () => {
+  const [sliderValue, setSliderValue] = useState(10000);
+
   const invoicePolling = useSelector((state) => state.polling);
+
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
@@ -20,10 +23,9 @@ const Amount = () => {
 
     dispatch(setPolling(true));
 
-    dispatch(setAmount(sliderAmount));
+    dispatch(setAmount(sliderValue));
   }
-  
-  const [sliderValue, setSliderValue] = useState(10000);
+
 
   const leftLabelStyles = {
     mt: "4",
@@ -60,7 +62,13 @@ const Amount = () => {
           ⚡️
         </SliderThumb>
       </Slider>
-      <Box display="flex" justifyContent="center" mt={4}>
+    </Box>
+    <div className={`text-2xl`} style={{display: 'flex', marginTop: '2rem'}}>
+      <div>Sats:</div>
+      &nbsp;
+      <div>{addCommas(sliderValue)}</div>
+    </div>
+    <Box display="flex" justifyContent="center" mt={4}>
         <Button
           colorScheme="green"
           onClick={handleSubmit}
@@ -69,12 +77,6 @@ const Amount = () => {
           Confirm
         </Button>
       </Box>
-    </Box>
-    <div className={`text-2xl`} style={{display: 'flex', marginTop: '2rem'}}>
-      <div>Sats:</div>
-      &nbsp;
-      <div>{addCommas(sliderValue)}</div>
-    </div>
     </>
   );
 };

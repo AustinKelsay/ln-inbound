@@ -25,9 +25,9 @@ export default function Home() {
           <span className={`text-5xl font-bold`}>LN Inbound</span>
         </Trail>
       </div>  
+      <Connect />
       <Amount />
       {invoicePolling && <Invoice />}
-      <Connect />
     </main>
   );
 }
