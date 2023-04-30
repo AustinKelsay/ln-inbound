@@ -1,8 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import { withSessionRoute } from '@/lib/sessions'
 import { openChannel } from '@/lib/lnd'
 
-export default async function handler (
+export default withSessionRoute(handler)
+
+async function handler (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
