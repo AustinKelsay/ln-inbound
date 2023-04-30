@@ -7,8 +7,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useSelector, useDispatch } from "react-redux";
-import { setConnected } from "@/redux/rootReducer";
+import { useDispatch } from "react-redux";
+import { setConnected, setPubKey } from "@/redux/rootReducer";
 
 const Connect = () => {
   const [nodePubkey, setNodePubkey] = useState("");
@@ -37,6 +37,8 @@ const Connect = () => {
         setMessageType("success");
 
         dispatch(setConnected(true));
+
+        dispatch(setPubKey(res.data.pub_key));
       } else {
         setMessage("Not connected");
         setMessageType("error");

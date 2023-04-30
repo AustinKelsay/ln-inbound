@@ -9,21 +9,34 @@ import {
   SliderMark,
 } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
-import { setAmount, setPolling } from "@/redux/rootReducer";
+import { setAmount, setPolling, setInvoice } from "@/redux/rootReducer";
 
 const Amount = () => {
-  const [sliderValue, setSliderValue] = useState(10000);
+  const [sliderValue, setSliderValue] = useState(20000);
 
   const invoicePolling = useSelector((state) => state.polling);
+
+  const pubkey = useSelector((state) => state.pubkey);
 
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(setPolling(true));
+    const response = await fetch(`/api/invoice/request?pubkey=${pubkey}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-    dispatch(setAmount(sliderValue));
+    const res = await response.json();
+
+    if (res?.data) {
+      dispatch(setPolling(true));
+
+      dispatch(setInvoice(res.data));
+    }
   };
 
   const leftLabelStyles = {
@@ -49,14 +62,14 @@ const Amount = () => {
       <Box w={"100%"} className="px-20 pt-20">
         <Slider
           aria-label="slider-ex-6"
-          defaultValue={10000}
-          min={10000}
+          defaultValue={20000}
+          min={20000}
           max={100000}
           step={10}
           onChange={(val) => setSliderValue(val)}
         >
-          <SliderMark value={10000} {...leftLabelStyles}>
-            10,000
+          <SliderMark value={20000} {...leftLabelStyles}>
+            20,000
           </SliderMark>
           <SliderMark value={100000} {...rightLabelStyles}>
             100,000

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   connected: false,
+  pubkey: null,
   amount: 50,
   invoice: null,
   polling: false,
@@ -16,6 +17,9 @@ export const lightningSlice = createSlice({
     setConnected: (state, action) => {
       state.connected = action.payload;
     },
+    setPubKey: (state, action) => {
+      state.pubkey = action.payload;
+    },
     setAmount: (state, action) => {
       state.amount = action.payload;
     },
@@ -28,7 +32,7 @@ export const lightningSlice = createSlice({
   },
 });
 
-export const { setConnected, setAmount, setInvoice, setPolling } =
+export const { setConnected, setPubKey, setAmount, setInvoice, setPolling } =
   lightningSlice.actions;
 
 export default lightningSlice.reducer;

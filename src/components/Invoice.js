@@ -43,7 +43,7 @@ const Invoice = () => {
           >
             <QRCode value={invoice} size={256} />
           </Box>
-          <Text fontSize="sm" color="white">
+          <Text fontSize="sm" color="white" w={"10%"}>
             {invoice}
           </Text>
           <Button
