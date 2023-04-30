@@ -1,6 +1,6 @@
 # Lightning Inbound
 
-Simple SPA that let's you sell channels and inbound to your lightning node.  
+Simple SPA that let's you sell channels and inbound liquidity from your lightning node.  
 
 Built for the Bitcoin++ ATX 2023 hackathon.
 
