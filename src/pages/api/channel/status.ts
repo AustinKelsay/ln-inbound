@@ -10,7 +10,7 @@ export default async function handler (
     const { pubkey } = req.session
 
     if (pubkey === undefined) {
-      return res.status(200).json({ ok: false, err: 'No pubkey!' })
+      return res.status(200).json({ ok: false, err: 'Session has expired!' })
     }
 
     const { ok, data, err } = await getChannels()

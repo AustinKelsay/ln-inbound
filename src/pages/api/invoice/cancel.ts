@@ -15,7 +15,7 @@ async function handler(
     const { invoice } = req.session
 
     if (invoice === undefined) {
-      return res.status(200).json({ ok: false, err: 'Session has expired!' })
+      return res.status(200).json({ ok: true })
     }
 
     const { hash } = invoice ?? {}

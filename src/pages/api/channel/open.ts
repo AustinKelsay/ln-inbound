@@ -10,8 +10,12 @@ export default async function handler (
   try {
     const { pubkey, invoice } = req.session
 
-    if (pubkey === undefined || invoice === undefined) {
+    if (pubkey === undefined) {
       return res.status(200).json({ ok: false, err: 'Session has expired!' })
+    }
+
+    if (invoice === undefined) {
+      return res.status(200).json({ ok: false, err: 'There is no invoice!' })
     }
 
     if (!invoice.paid) {
