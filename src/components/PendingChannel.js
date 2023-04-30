@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, Text, VStack, Button, Flex, Center } from "@chakra-ui/react";
-import { useSelector, useDispatch } from "react-redux";
+import { Text, VStack, Button } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
 const PendingChannel = () => {
   const amount = useSelector((state) => state.amount);
@@ -9,6 +9,9 @@ const PendingChannel = () => {
     <VStack mt={10} alignItems="center" justifyContent="center" spacing={4}>
       <Text fontSize="xl" fontWeight="bold">
         Your {amount} sat channel is pending
+      </Text>
+      <Text fontSize="xl" fontWeight="bold">
+        Txid: {txid}
       </Text>
       <Button colorScheme={"blue"}>
         <a

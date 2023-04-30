@@ -60,7 +60,7 @@ export default function Home() {
 
       {invoicePolling && <Invoice />}
 
-      {paid && !invoicePolling && <OpeningChannel />}
+      {paid && !invoicePolling && !txid && <OpeningChannel />}
 
       {txid && !invoicePolling && <PendingChannel />}
     </main>

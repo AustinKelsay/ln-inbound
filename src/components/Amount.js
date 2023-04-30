@@ -23,6 +23,8 @@ const Amount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    dispatch(setAmount(sliderValue));
+
     const response = await fetch(`/api/invoice/request?pubkey=${pubkey}`, {
       method: "GET",
       headers: {

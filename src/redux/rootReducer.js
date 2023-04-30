@@ -32,6 +32,9 @@ export const lightningSlice = createSlice({
     setPolling: (state, action) => {
       state.polling = action.payload;
     },
+    setTxId: (state, action) => {
+      state.txid = action.payload;
+    },
   },
 });
 
@@ -42,6 +45,7 @@ export const {
   setInvoice,
   setPaid,
   setPolling,
+  setTxId,
 } = lightningSlice.actions;
 
 export default lightningSlice.reducer;
