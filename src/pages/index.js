@@ -45,6 +45,9 @@ export default function Home() {
           <span className={`text-5xl font-bold`}>LN Inbound</span>
         </Trail>
       </div>
+
+      <NodeInfo {...mockNodeInfo} />
+
       {!invoicePolling && (
         <>
           <Connect />
