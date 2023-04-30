@@ -58,11 +58,11 @@ export default function Home() {
       {!invoicePolling && !paid && (
         <>
           <Connect />
-          {connected && <Amount />}
+          {!txid && connected && <Amount />}
         </>
       )}
 
-      {invoicePolling && <Invoice />}
+      {!txid && invoicePolling && <Invoice />}
 
       {paid && !invoicePolling && !txid && <OpeningChannel />}
 

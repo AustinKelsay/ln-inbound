@@ -1,8 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { addPeer } from '@/lib/lnd'
+import { withSessionRoute } from '@/lib/sessions'
 
-export default async function handler (
+export default withSessionRoute(handler)
+
+async function handler (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
@@ -22,6 +25,9 @@ export default async function handler (
     if (!ok) {
       return res.status(status).json({ ok: false, ...data, err })
     }
+
+    req.session.pubkey = pubkey
+    await req.session.save()
 
     return res.status(200).json({ ok: true, data })
   } catch(err) { 

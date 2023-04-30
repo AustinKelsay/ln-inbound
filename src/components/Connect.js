@@ -16,23 +16,23 @@ const Connect = () => {
   const [messageType, setMessageType] = useState("");
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const channelStatus = async () => {
-      try {
-        const response = await fetch("/api/channel/status");
-        const data = await response.json();
-        console.log("here", data);
+  // useEffect(() => {
+  //   const channelStatus = async () => {
+  //     try {
+  //       const response = await fetch("/api/channel/status");
+  //       const data = await response.json();
+  //       console.log("here", data);
 
-        if (data.ok && data.data) {
-          dispatch(setTxId(data.data));
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  //       if (data.ok && data.data) {
+  //         dispatch(setTxId(data.data));
+  //       }
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
 
-    channelStatus();
-  }, []);
+  //   channelStatus();
+  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,6 +65,20 @@ const Connect = () => {
       console.log(error);
       setMessage("An error occurred. Please try again.");
       setMessageType("error");
+    }
+
+    const res = await fetch('/api/getsession')
+
+    try {
+      const response = await fetch("/api/channel/status");
+      const data = await response.json();
+      console.log("here", data);
+
+      if (data.ok && data.data) {
+        dispatch(setTxId(data.data));
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 

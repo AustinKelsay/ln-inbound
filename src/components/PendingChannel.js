@@ -7,11 +7,11 @@ const PendingChannel = () => {
   const txid = useSelector((state) => state.txid);
   return (
     <VStack mt={10} alignItems="center" justifyContent="center" spacing={4}>
-      <Text fontSize="xl" fontWeight="bold">
-        Your {amount} sat channel is pending
+      <Text fontSize="l" fontWeight="bold">
+        Your {amount} sat channel is confirming at Txid:
       </Text>
-      <Text fontSize="xl" fontWeight="bold">
-        Txid: {txid}
+      <Text fontSize="s" fontWeight="bold">
+        {txid}
       </Text>
       <Button colorScheme={"blue"}>
         <a
