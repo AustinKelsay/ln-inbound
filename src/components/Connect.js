@@ -60,11 +60,7 @@ const Connect = () => {
               onChange={(e) => setNodePubkey(e.target.value)}
             />
           </FormControl>
-          <Button
-            type="submit"
-            colorScheme="blue"
-            style={{ marginTop: "5rem" }}
-          >
+          <Button type="submit" colorScheme="blue">
             Connect
           </Button>
           {message && (
