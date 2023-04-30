@@ -49,8 +49,8 @@ async function handler(
     }
 
     req.session.pubkey  = pubkey
-    req.session.invoice = { paid: false, hash, amount, receipt: payment_request }
-    
+    req.session.invoice = { paid: false, hash, receipt: payment_request }
+
     await req.session.save()
 
     if (payment_request === undefined) {

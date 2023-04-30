@@ -18,23 +18,7 @@ export function normalizeParams (
   return p 
 }
 
-export function getFormData (
-  formData : HTMLFormElement
-) : Record<string, string> {
-  const formObj : Record<string, string> = {}
-  const entries = new FormData(formData).entries()
-  for (const [ key, val ] of entries) {
-    formObj[key] = String(val)
-  }
-  return formObj
-}
-
 export function getRandString() : string {
   const chars = crypto.getRandomValues(new Uint8Array(32)).map(n => n % 88 + 40)
   return btoa(dc.decode(chars))
-}
-
-export async function sha256(str : string) {
-  return crypto.subtle.digest('SHA-256', ec.encode(str))
-    .then(buff => btoa(dc.decode(buff)))
 }

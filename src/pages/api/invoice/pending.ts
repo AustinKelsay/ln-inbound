@@ -31,6 +31,10 @@ async function handler (
     }
 
     if (data.settled) {
+      if (req.session.invoice === undefined) {
+        console.error('Invoice should not be undefined!')
+        return res.status(500).end()
+      }
       req.session.invoice.paid = true
       await req.session.save()
     }

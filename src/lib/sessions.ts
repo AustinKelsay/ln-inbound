@@ -5,7 +5,7 @@ import { getRandString }  from './utils'
 declare module 'iron-session' {
   interface IronSessionData {
     pubkey  ?: string
-    invoice ?: any
+    invoice ?: { paid: boolean, hash: string, receipt: any }
     opentx  ?: { txid: string, vout: number }
   }
 }
