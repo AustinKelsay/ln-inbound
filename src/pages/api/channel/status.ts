@@ -31,6 +31,8 @@ async function handler (
 
     const channel = channels.filter((e : any) => e.remote_pubkey === pubkey)[0] ?? {}
 
+    console.log('channel:', channel)
+
     return res.status(200).json({ok: true, data: channel })
   } catch(err) { 
     console.error(err)
