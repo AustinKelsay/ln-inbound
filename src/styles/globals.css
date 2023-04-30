@@ -22,6 +22,7 @@ html body {
   color: rgb(var(--foreground-rgb));
   font-family: "Source Code Pro", monospace;
   animation: color-change 45s infinite;
+  color: white;
 }
 
 @keyframes color-change {
