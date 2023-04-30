@@ -132,14 +132,14 @@ const Amount = () => {
       <div className="font-bold">
         <span>Base fee: {baseFee} </span>
         <span>Channel Size: {addCommas(sliderValue)} </span>
-        <span>Fee rate: {feeRate}</span>
+        <span>Fee rate: {feeRate}%</span>
       </div>
       <div
         className={`text-2xl flex-row content-center items-center`}
         style={{ display: "flex", marginTop: "1rem" }}
       >
         <Tooltip
-          label="The total cost is calculated as the base fee + the channel size * the fee rate (rounded up to the nearest integer)"
+          label="The total cost is calculated as the base fee + (channel size * fee rate), rounded up to the nearest integer"
           fontSize="md"
           placement="top"
           hasArrow
