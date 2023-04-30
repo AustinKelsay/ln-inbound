@@ -23,14 +23,15 @@ const Amount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    dispatch(setAmount(sliderValue));
-
-    const response = await fetch(`/api/invoice/request?pubkey=${pubkey}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `/api/invoice/request?pubkey=${pubkey}&amount=${sliderValue}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     const res = await response.json();
 
@@ -38,6 +39,8 @@ const Amount = () => {
       dispatch(setPolling(true));
 
       dispatch(setInvoice(res.data));
+
+      dispatch(setAmount(sliderValue));
     }
   };
 
