@@ -34,6 +34,21 @@ const Invoice = () => {
     };
   }, [dispatch]);
 
+  const handleCancel = async () => {
+    try {
+      const response = await fetch("/api/invoice/cancel");
+      const data = await response.json();
+
+      console.log(data);
+
+      if (data.ok) {
+        dispatch(setPolling(false));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <VStack mt={10} alignItems="center" justifyContent="center" spacing={4}>
       <>
@@ -51,7 +66,7 @@ const Invoice = () => {
         <Text fontSize="sm" color="white" w={"10%"}>
           {invoice}
         </Text>
-        <Button colorScheme={"red"} onClick={() => dispatch(setPolling(false))}>
+        <Button colorScheme={"red"} onClick={handleCancel}>
           Cancel
         </Button>
       </>
