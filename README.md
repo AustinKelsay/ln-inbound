@@ -1,38 +1,73 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Lightning Inbound
+
+Simple SPA that let's you sell channels and inbound to your lightning node.  
+
+Built for the Bitcoin++ ATX 2023 hackathon.
+
+In loving memory of zero fee routing (RIP).  
 
 ## Getting Started
 
-First, run the development server:
+This project is meant to be forked and deployed with ease.
+
+### Deploy to Vercel
+
+You can one-click deploy this project to vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FAustinKelsay%2Fln-inbound&env=LND_HOSTNAME,LND_MACAROON,SESSION_KEY,BASE_FEE,RATE_FEE,MIN_RESERVE,MAX_CHANSIZE&envDescription=Check%20out%20the%20repo%20documentation%20to%20learn%20more%20about%20how%20to%20configure%20these%20variables&envLink=https%3A%2F%2Fgithub.com%2FAustinKelsay%2Fln-inbound&project-name=my-lightning-inbound&repository-name=my-lightning-inbound)
+
+Make sure to configure your environment variables.
+
+### Host Your Own
+
+Configure your variables in `.env.local` or `config.ts`.
+
+Check out the `env.sample` file for an example of what to do:
+
+```conf
+## The full URI to connect to your lightning node.
+LND_HOSTNAME=protocol://hostname:port
+## The hex-encoded admin macaroon for your lightning node.
+LND_MACAROON=hex_encoded_admin_macaroon
+## A random 32-byte hex-encoded key (for encrypting session data).
+SESSION_KEY=32_byte_hex_encoded_random_key
+
+BASE_FEE=25000        ## The base fee (in sats) to charge for a channel.
+RATE_FEE=1            ## The percentage fee (channel size * rate fee) to charge.
+MIN_RESERVE=50000     ## The minimum reserve balance to keep on-chain.
+MAX_CHANSIZE=1000000  ## The absolute max channel size allowed.
+```
+
+Start the production server:
+
+```bash
+npm run start
+# or
+yarn start
+```
+
+## Development
+
+Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Bugs / Issues
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Feel free to submit an issue if you run into any bugs or have a question.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Contribution
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Anyone can contribute to this project! 
 
-## Learn More
+## Resources
 
-To learn more about Next.js, take a look at the following resources:
+**LND REST API Documentation**  
+https://lightning.engineering/api-docs/api/lnd/rest-endpoints
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
