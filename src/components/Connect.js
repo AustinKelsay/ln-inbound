@@ -23,8 +23,8 @@ const Connect = () => {
         const data = await response.json();
         console.log("here", data);
 
-        if (data.ok && data.data && data.data.active) {
-          dispatch(setTxId(data.data.channel_point.split(":")[0]));
+        if (data.ok && data.data) {
+          dispatch(setTxId(data.data));
         }
       } catch (error) {
         console.error(error);

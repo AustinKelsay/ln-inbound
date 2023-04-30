@@ -30,8 +30,8 @@ const PendingChannel = () => {
         const data = await response.json();
         console.log(data);
 
-        if (data.ok && data.data && data.data.channel_point) {
-          dispatch(setTxId(data.data.channel_point.split(":")[0]));
+        if (data.ok && data.data) {
+          dispatch(setTxId(data.data));
         }
       } catch (error) {
         console.error(error);
