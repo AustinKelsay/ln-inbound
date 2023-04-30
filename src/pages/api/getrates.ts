@@ -1,14 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { config } from '@/config'
+import { getRates } from '@/lib/rates'
 
 export default async function handler (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { max_chansize, fee_rate, base_fee } = config
   try {
-    return res.status(200).json({ max_chansize, fee_rate, base_fee })
+    const { ok, data, err } = await getRates()
+
+    if (!ok || data === undefined || err !== undefined) {
+      return res.status(200).json({ ok: false, ...data, err })
+    }
+    return res.status(200).json({ ok: true, data })
   } catch(err) { 
     console.error(err)
     res.status(500).end() 

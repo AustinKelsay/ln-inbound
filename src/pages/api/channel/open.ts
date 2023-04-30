@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import { Buff } from '@cmdcode/buff-utils'
 import { withSessionRoute } from '@/lib/sessions'
 import { openChannel } from '@/lib/lnd'
 
@@ -34,7 +35,8 @@ async function handler (
     }
 
     const { funding_txid_bytes, output_index } = data
-    const opentx = { txid: funding_txid_bytes, vout: output_index }
+    const txid = Buff.base64(funding_txid_bytes).hex
+    const opentx = { txid, vout: output_index }
 
     req.session.opentx = opentx
     await req.session.save()

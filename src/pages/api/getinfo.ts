@@ -9,7 +9,7 @@ export default async function handler (
   try {
     const { ok, data, err } = await getInfo()
 
-    if (!ok || data === undefined) {
+    if (!ok || data === undefined || err !== undefined) {
       return res.status(200).json({ ok: false, ...data, err })
     }
 

@@ -15,7 +15,7 @@ interface LNDInvoiceCreate {
 }
 
 interface createInvoice {
-  amount : string
+  amount : number
   hash  ?: string
   memo  ?: string
 }
@@ -29,6 +29,10 @@ interface LNDResponse {
 
 export async function getInfo () {
   return fetchEndpoint('/v1/getinfo')
+}
+
+export async function getBalance () {
+  return fetchEndpoint('/v1/balance/blockchain')
 }
 
 export async function getPeers () {
@@ -68,7 +72,7 @@ export async function addPeer (
 export async function createInvoice ({
   amount, hash, memo
 } : createInvoice ) {
-  const body : Record<string, string> = { value_msat: amount }
+  const body : Record<string, string> = { value_msat: String(amount) }
   if (hash !== undefined) body.description_hash = hash
   if (memo !== undefined) body.memo = memo
   const opt = {
