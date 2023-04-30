@@ -5,6 +5,7 @@ import Invoice from "@/components/Invoice";
 import Trail from "@/components/Trail";
 import PendingChannel from "@/components/PendingChannel";
 import NodeInfo from "@/components/NodeInfo";
+import OpeningChannel from "@/components/OpeningChannel";
 import { useSelector } from "react-redux";
 
 const mockNodeInfo = {
@@ -20,6 +21,7 @@ export default function Home() {
   const invoicePolling = useSelector((state) => state.polling);
   const connected = useSelector((state) => state.connected);
   const txid = useSelector((state) => state.txid);
+  const paid = useSelector((state) => state.paid);
 
   const [open, setOpen] = useState(false);
 
@@ -49,7 +51,7 @@ export default function Home() {
 
       <NodeInfo {...mockNodeInfo} />
 
-      {!invoicePolling && (
+      {!invoicePolling && !paid && (
         <>
           <Connect />
           {connected && <Amount />}
@@ -57,6 +59,8 @@ export default function Home() {
       )}
 
       {invoicePolling && <Invoice />}
+
+      {paid && !invoicePolling && <OpeningChannel />}
 
       {txid && !invoicePolling && <PendingChannel />}
     </main>

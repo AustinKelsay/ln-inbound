@@ -26,13 +26,22 @@ export const lightningSlice = createSlice({
     setInvoice: (state, action) => {
       state.invoice = action.payload;
     },
+    setPaid: (state, action) => {
+      state.paid = action.payload;
+    },
     setPolling: (state, action) => {
       state.polling = action.payload;
     },
   },
 });
 
-export const { setConnected, setPubKey, setAmount, setInvoice, setPolling } =
-  lightningSlice.actions;
+export const {
+  setConnected,
+  setPubKey,
+  setAmount,
+  setInvoice,
+  setPaid,
+  setPolling,
+} = lightningSlice.actions;
 
 export default lightningSlice.reducer;
