@@ -27,7 +27,7 @@ const Connect = () => {
       //   });
 
       const response = {
-        ok: false,
+        ok: true,
       };
 
       if (response.ok) {
@@ -60,7 +60,11 @@ const Connect = () => {
               onChange={(e) => setNodePubkey(e.target.value)}
             />
           </FormControl>
-          <Button type="submit" colorScheme="blue" style={{marginTop: '5rem'}}>
+          <Button
+            type="submit"
+            colorScheme="blue"
+            style={{ marginTop: "5rem" }}
+          >
             Connect
           </Button>
           {message && (
