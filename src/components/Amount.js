@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -7,12 +7,18 @@ import {
   SliderFilledTrack,
   SliderThumb,
   SliderMark,
+  Tooltip,
+  IconButton,
 } from "@chakra-ui/react";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { setAmount, setPolling, setInvoice } from "@/redux/rootReducer";
 
 const Amount = () => {
   const [sliderValue, setSliderValue] = useState(20000);
+  const [maxAmount, setMaxAmount] = useState(null);
+  const [baseFee, setBaseFee] = useState(null);
+  const [feeRate, setFeeRate] = useState(null);
 
   const invoicePolling = useSelector((state) => state.polling);
 
@@ -44,6 +50,27 @@ const Amount = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const response = await fetch(`/api/getrates`);
+        const data = await response.json();
+        console.log(data);
+
+        if (data?.data) {
+          setMaxAmount(data.data.max_size);
+
+          setBaseFee(data.data.base_fee);
+
+          setFeeRate(data.data.fee_rate);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchRates();
+  }, []);
+
   const leftLabelStyles = {
     mt: "4",
     ml: "-7",
@@ -56,10 +83,27 @@ const Amount = () => {
     fontSize: "sm",
   };
 
-  const addCommas = (num) => {
-    const asString = num.toString();
+  const addCommas = (value) => {
+    let output = "";
+    if (typeof value === "number") {
+      output = value.toString();
+    } else {
+      output = value;
+    }
 
-    return asString.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    return output ? output.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : "";
+  };
+
+  const getTotal = () => {
+    // The total is the base fee times the fee rate but make sure it is not a decimal number, round up if it is
+    if (baseFee && feeRate) {
+      const total = baseFee * feeRate;
+      if (total % 1 !== 0) {
+        return Math.ceil(total);
+      }
+      return total;
+    }
+    return null;
   };
 
   return (
@@ -69,15 +113,15 @@ const Amount = () => {
           aria-label="slider-ex-6"
           defaultValue={20000}
           min={20000}
-          max={100000}
+          max={maxAmount}
           step={10}
           onChange={(val) => setSliderValue(val)}
         >
           <SliderMark value={20000} {...leftLabelStyles}>
             20,000
           </SliderMark>
-          <SliderMark value={100000} {...rightLabelStyles}>
-            100,000
+          <SliderMark value={maxAmount} {...rightLabelStyles}>
+            {addCommas(maxAmount)}
           </SliderMark>
           <SliderTrack>
             <SliderFilledTrack />
@@ -85,13 +129,31 @@ const Amount = () => {
           <SliderThumb boxSize={5}>⚡️</SliderThumb>
         </Slider>
       </Box>
+      <div className="font-bold">
+        <span>Base fee: {baseFee} </span>
+        <span>Channel Size: {addCommas(sliderValue)} </span>
+        <span>Fee rate: {feeRate}</span>
+      </div>
       <div
-        className={`text-2xl`}
-        style={{ display: "flex", marginTop: "2rem" }}
+        className={`text-2xl flex-row content-center items-center`}
+        style={{ display: "flex", marginTop: "1rem" }}
       >
-        <div>Sats:</div>
+        <Tooltip
+          label="The total cost is calculated as the base fee times the fee rate, rounded up to the nearest integer."
+          fontSize="md"
+          placement="top"
+          hasArrow
+        >
+          <IconButton
+            icon={<InfoOutlineIcon />}
+            variant="ghost"
+            size="md"
+            aria-label="Info about total cost"
+          />
+        </Tooltip>
+        <p>Total</p>
         &nbsp;
-        <div>{addCommas(sliderValue)}</div>
+        <p>{getTotal()} sats</p>
       </div>
       <Box display="flex" justifyContent="center" mt={4}>
         <Button
