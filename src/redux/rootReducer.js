@@ -5,6 +5,8 @@ const initialState = {
   amount: 50,
   invoice: null,
   polling: false,
+  paid: false,
+  txid: null,
 };
 
 export const lightningSlice = createSlice({
