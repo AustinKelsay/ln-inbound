@@ -18,7 +18,14 @@ export async function getRates () : Promise<{ ok : boolean, data : FeeRates, err
 
   const { confirmed_balance } = data
 
-  const max_size = Math.max(Math.min(Number(confirmed_balance) - min_reserve, max_chansize), 0)
+  console.log('balance:', confirmed_balance)
+
+  const available_balance = Number(confirmed_balance) - Number(min_reserve)
+
+  let max_size
+
+  max_size = Math.min(available_balance, max_chansize)
+  max_size = Math.max(max_size, 0)
 
   return { ok: true, data: { max_size, fee_rate, base_fee }}
 }
