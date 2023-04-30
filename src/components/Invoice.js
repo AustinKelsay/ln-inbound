@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import QRCode from "qrcode.react";
 import { Box, Text, VStack } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 
-const Invoice = ({ setInvoicePolling }) => {
-  const [invoice, setInvoice] = useState(
-    "lnbc1qrtlksdfgjsdlkgjlwdvskldvnkslfjnblsknmlsdi5858ffursdkjgnskjg8"
-  );
+const Invoice = () => {
+  const invoice = useSelector((state) => state.invoice);
 
   return (
     <VStack mt={10} alignItems="center" justifyContent="center" spacing={4}>

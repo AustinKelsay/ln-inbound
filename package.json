@@ -15,6 +15,7 @@
     "@types/node": "18.11.19",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
+    "@reduxjs/toolkit": "^1.9.5",
     "autoprefixer": "10.4.14",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.2",
@@ -31,6 +32,9 @@
   },
   "devDependencies": {
     "@cmdcode/buff-utils": "^1.7.1",
-    "dayjs": "^1.11.7"
+    "dayjs": "^1.11.7",
+    "react-redux": "^8.0.5",
+    "redux": "^4.2.1",
+    "tailwindcss": "3.3.2"
   }
 }
