@@ -7,7 +7,11 @@ export default async function handler (
   res: NextApiResponse
 ) {
   try {
-    const { pubkey } = req.query
+    const { pubkey } = req.session
+
+    if (pubkey === undefined) {
+      return res.status(200).json({ ok: false, err: 'No pubkey!' })
+    }
 
     const { ok, data, err } = await getChannels()
 
