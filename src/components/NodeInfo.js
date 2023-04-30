@@ -5,7 +5,7 @@ const NodeInfo = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("/api/getinfo");
+      const response = await fetch(`/api/getinfo`);
       const data = await response.json();
       setNodeInfo(data.data);
     };
@@ -17,12 +17,10 @@ const NodeInfo = () => {
     <div className="text-xl">
       {nodeInfo ? (
         nodeInfo.map((info) => (
-          <div key={info}>
-            <div>
-              <span className="font-bold">Node URI</span>
-              <br />
-              {info}
-            </div>
+          <div className="max-w-full" key={info}>
+            <span className="font-bold">Node URI</span>
+            <br />
+            {info}
           </div>
         ))
       ) : (
