@@ -54,7 +54,7 @@ async function handler (
       console.log('channel:', channel)
     }
 
-    return res.status(200).json({ok: true, data: channel })
+    return res.status(200).json({ok: true, data: channel.channel_point.split(':')[0] })
   } catch(err) { 
     console.error(err)
     res.status(500).end() 
