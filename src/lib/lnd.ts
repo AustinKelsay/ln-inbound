@@ -43,6 +43,10 @@ export async function getChannels () {
   return fetchEndpoint('/v1/channels')
 }
 
+export async function getPendingChannels () {
+  return fetchEndpoint('/v1/channels/pending')
+}
+
 export async function openChannel (
   pubkey  : string, 
   amount  : number,
