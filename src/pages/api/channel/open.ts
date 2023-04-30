@@ -8,14 +8,13 @@ export default async function handler (
 ) {
   
   try {
-    const { pubkey, amount } = req.body
+    const { pubkey } = req.session
 
-    if (
-      typeof pubkey !== 'string' || 
-      typeof amount !== 'number'
-    ) {
-      return res.status(400)
+    if (pubkey === undefined) {
+      return res.status(200).json({ ok: false, err: 'Session has expired!' })
     }
+
+    const amount = 25000
 
     const { ok, data, status = 500 , err } = await openChannel(pubkey, amount)
 
