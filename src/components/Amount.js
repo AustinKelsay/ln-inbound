@@ -56,6 +56,13 @@ const Amount = () => {
   };
 
   useEffect(() => {
+    if (baseFee && feeRate) {
+      const calculatedTotal = baseFee + sliderValue * feeRate;
+      setTotal(Math.ceil(calculatedTotal));
+    }
+  }, [sliderValue, baseFee, feeRate]);
+
+  useEffect(() => {
     const fetchRates = async () => {
       try {
         setIsLoading(true);
@@ -106,16 +113,30 @@ const Amount = () => {
     return output ? output.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,") : "";
   };
 
-  const getTotal = () => {
-    // total = baseFee + (channelSize * feeRate)
-    if (baseFee && feeRate) {
-      const total = baseFee + sliderValue * feeRate;
-      if (total % 1 !== 0) {
-        return Math.ceil(total);
-      }
-      return total;
+  const renderSlider = () => {
+    if (total !== null) {
+      return (
+        <Slider
+          aria-label="slider-ex-6"
+          defaultValue={20000}
+          min={20000}
+          max={maxAmount}
+          step={10}
+          onChange={(val) => setSliderValue(val)}
+        >
+          <SliderMark value={20000} {...leftLabelStyles}>
+            20,000
+          </SliderMark>
+          <SliderMark value={maxAmount} {...rightLabelStyles}>
+            {addCommas(maxAmount)}
+          </SliderMark>
+          <SliderTrack>
+            <SliderFilledTrack />
+          </SliderTrack>
+          <SliderThumb boxSize={5}>⚡️</SliderThumb>
+        </Slider>
+      );
     }
-    return null;
   };
 
   if (isLoading) {
@@ -136,25 +157,7 @@ const Amount = () => {
   return (
     <>
       <Box w={"100%"} className="px-20 pt-15">
-        <Slider
-          aria-label="slider-ex-6"
-          defaultValue={20000}
-          min={20000}
-          max={maxAmount}
-          step={10}
-          onChange={(val) => setSliderValue(val)}
-        >
-          <SliderMark value={20000} {...leftLabelStyles}>
-            20,000
-          </SliderMark>
-          <SliderMark value={maxAmount} {...rightLabelStyles}>
-            {addCommas(maxAmount)}
-          </SliderMark>
-          <SliderTrack>
-            <SliderFilledTrack />
-          </SliderTrack>
-          <SliderThumb boxSize={5}>⚡️</SliderThumb>
-        </Slider>
+        {renderSlider()}
       </Box>
       <div className="font-bold">
         <span>Base fee: {baseFee} </span>
