@@ -35,7 +35,7 @@ export default function Home() {
     <main
       className={`flex min-h-screen flex-col items-center justify-even p-12`}
     >
-      <div
+      {/* <div
         className={`w-full`}
         style={{
           minHeight: 50,
@@ -66,7 +66,8 @@ export default function Home() {
 
       {paid && !invoicePolling && !txid && <OpeningChannel />}
 
-      {txid && !invoicePolling && <PendingChannel />}
+      {txid && !invoicePolling && <PendingChannel />} */}
+      <h1>Check back in soon</h1>
     </main>
   );
 }
