@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, VStack, Button } from "@chakra-ui/react";
+import { Text, VStack, Button, Code } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 
 const PendingChannel = () => {
@@ -8,11 +8,11 @@ const PendingChannel = () => {
   return (
     <VStack mt={10} alignItems="center" justifyContent="center" spacing={4}>
       <Text fontSize="l" fontWeight="bold">
-        Your {amount} sat channel is confirming at Txid:
+        Your {amount} sat channel is confirming
       </Text>
-      <Text fontSize="s" fontWeight="bold">
-        {txid}
-      </Text>
+      <Code display="block" whiteSpace="pre-wrap" p={2} my={2}>
+        Txid: {txid}
+      </Code>
       <Button colorScheme={"blue"}>
         <a
           href={`https://mempool.space/tx/${txid}`}

@@ -57,7 +57,7 @@ const Amount = () => {
 
   useEffect(() => {
     if (baseFee && feeRate) {
-      const calculatedTotal = baseFee + sliderValue * feeRate;
+      const calculatedTotal = sliderValue * feeRate + baseFee;
       setTotal(Math.ceil(calculatedTotal));
     }
   }, [sliderValue, baseFee, feeRate]);
@@ -89,6 +89,10 @@ const Amount = () => {
     };
     fetchRates();
   }, []);
+
+  const formatFeeRate = (rate) => {
+    return rate ? (rate * 100).toFixed(2) + "%" : "";
+  };
 
   const leftLabelStyles = {
     mt: "4",
@@ -133,7 +137,9 @@ const Amount = () => {
           <SliderTrack>
             <SliderFilledTrack />
           </SliderTrack>
-          <SliderThumb boxSize={5}>⚡️</SliderThumb>
+          <SliderThumb style={{ background: "#303030" }} boxSize={6}>
+            ⚡️
+          </SliderThumb>
         </Slider>
       );
     }
@@ -156,13 +162,13 @@ const Amount = () => {
 
   return (
     <>
-      <Box w={"100%"} className="px-20 pt-15">
+      <Box w={"100%"} className="pt-20">
         {renderSlider()}
       </Box>
       <div className="font-bold">
         <span>Base fee: {baseFee} </span>
         <span>Channel Size: {addCommas(sliderValue)} </span>
-        <span>Fee rate: {feeRate}%</span>
+        <span>Fee rate: {formatFeeRate(feeRate)}</span>
       </div>
       <div
         className={`text-2xl flex-row content-center items-center`}

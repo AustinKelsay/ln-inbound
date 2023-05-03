@@ -8,15 +8,6 @@ import NodeInfo from "@/components/NodeInfo";
 import OpeningChannel from "@/components/OpeningChannel";
 import { useSelector } from "react-redux";
 
-const mockNodeInfo = {
-  identity_pubkey:
-    "03298ea87f45bd5294f8052948564b68da378fa640267c7955128f35ee1ad6a064",
-  alias: "alice",
-  uris: [
-    "03298ea87f45bd5294f8052948564b68da378fa640267c7955128f35ee1ad6a064@172.20.0.4:9735",
-  ],
-};
-
 export default function Home() {
   const invoicePolling = useSelector((state) => state.polling);
   const connected = useSelector((state) => state.connected);
@@ -33,7 +24,7 @@ export default function Home() {
 
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-even p-12`}
+      className={`flex min-h-screen flex-col items-center justify-even p-12 pt-5`}
     >
       {/* <div
         className={`w-full`}
@@ -52,8 +43,7 @@ export default function Home() {
       <p>Serving inbound channels to the plebs.</p>
       <br></br>
 
-
-      <NodeInfo {...mockNodeInfo} />
+      <NodeInfo />
 
       {!invoicePolling && !paid && (
         <>
