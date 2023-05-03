@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { Buff } from '@cmdcode/buff-utils'
 import { withSessionRoute } from '@/lib/sessions'
-import { openChannel } from '@/lib/lnd'
+import { getChannels, getPendingChannels } from '@/lib/lnd'
 
 export default withSessionRoute(handler)
 
@@ -10,40 +9,66 @@ async function handler (
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  
   try {
-    const { pubkey, invoice } = req.session
+    const { pubkey } = req.session
 
     if (pubkey === undefined) {
-      return res.status(200).json({ ok: false, err: 'Session has expired!' })
+      return res.status(200).json({ ok: false, err: 'No pubkey is set!' })
     }
 
-    if (invoice === undefined) {
-      return res.status(200).json({ ok: false, err: 'There is no invoice!' })
+    let status, txid
+
+    const { ok, data, err } = await getChannels()
+
+    if (!ok || data === undefined || err !== undefined) {
+      return res.status(200).json({ ok: false, err })
     }
 
-    if (!invoice.paid) {
-      return res.status(200).json({ ok: false, err: 'Invoice has not been paid!' })
+    const { channels } = data
+
+    if (!Array.isArray(channels)) {
+      console.log('channels is not an array:', channels)
+     return res.status(500).end() 
     }
 
-    const amount = 25000
+    const active = channels.filter((e : any) => e.remote_pubkey === pubkey)[0] ?? undefined
 
-    const { ok, data, err } = await openChannel(pubkey, amount)
+    console.log('active:', active)
 
-    if (!ok) {
-      return res.status(200).json({ ok: false, data, err })
+    if (active !== undefined) {
+      txid   = active.channel_point.split(':')[0]
+      status = 'active'
+    } else {
+      const { ok, data, err } = await getPendingChannels()
+
+      if (!ok || data === undefined || err !== undefined) {
+        return res.status(200).json({ ok: false, err })
+      }
+
+      const { pending_open_channels: channels } = data
+
+      if (!Array.isArray(channels)) {
+        console.log('channels is not an array:', channels)
+        return res.status(500).end() 
+      }
+
+      const pending = channels.filter((e : any) => e.channel.remote_node_pub === pubkey)[0] ?? undefined
+
+      if (pending !== undefined) {
+        status = 'pending'
+        txid   = pending.channel
+      }
+
+      console.log('pending:', pending)
     }
 
-    const { funding_txid_bytes, output_index } = data
-    const txid = Buff.base64(funding_txid_bytes).hex
-    const opentx = { txid, vout: output_index }
+    console.log(txid, status)
 
-    req.session.opentx = opentx
-    await req.session.save()
 
-    return res.status(200).json({ ok: true, data: opentx })
-  } catch(err) { 
-    console.error('err:', err)
+
+    return res.status(200).json({ ok: true, data: { txid, status } })
+  } catch(err) {
+    console.error(err)
     res.status(500).end()
   }
 }

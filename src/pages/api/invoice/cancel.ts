@@ -14,15 +14,16 @@ async function handler(
   try {
     const { invoice } = req.session
 
-    if (invoice === undefined) {
+    if (invoice?.hash === undefined) {
       return res.status(200).json({ ok: true })
     }
 
-    const { hash } = invoice ?? {}
+    await cancelInvoice(invoice.hash)
 
-    await cancelInvoice(hash)
-
-    req.session.destroy()
+    req.session.chsize  = 0
+    req.session.invoice = undefined
+    
+    await req.session.save()
 
     return res.status(200).json({ ok: true })
   } catch(err) {

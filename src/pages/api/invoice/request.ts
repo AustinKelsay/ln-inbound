@@ -19,10 +19,10 @@ async function handler(
 ) {
 
   // Reject all methods other than GET.
-  if (req.method !== 'GET') res.status(400).end()
+  if (req.method !== 'POST') return res.status(400).end()
 
   // Grab the slug and url from the post body.
-  const { pubkey, amount } = normalizeParams(req.query)
+  const { pubkey, amount } = req.body
 
   if (pubkey === undefined || amount === undefined) {
     return res.status(200).json({ ok: false, err: 'Invalid request!' })
@@ -43,7 +43,7 @@ async function handler(
       return res.status(200).json({ ok: false, err: 'Amount exceeds max channel size!' })
     }
 
-    const charge = Math.floor(amt * fee_rate) + base_fee
+    const charge = (Math.floor(amt * fee_rate) + base_fee) * 1000
 
     const memo = `${pubkey} paid for a channel`
 
@@ -64,6 +64,7 @@ async function handler(
     }
 
     req.session.pubkey  = pubkey
+    req.session.chsize  = amt
     req.session.invoice = { paid: false, hash, receipt: payment_request }
 
     await req.session.save()
