@@ -28,10 +28,10 @@ async function handler (
 
     const amount = 25000
 
-    const { ok, data, status = 500 , err } = await openChannel(pubkey, amount)
+    const { ok, data, err } = await openChannel(pubkey, amount)
 
     if (!ok) {
-      return res.status(status).json({ ok: false, ...data, err })
+      return res.status(200).json({ ok: false, data, err })
     }
 
     const { funding_txid_bytes, output_index } = data

@@ -21,10 +21,9 @@ interface createInvoice {
 }
 
 interface LNDResponse {
-  ok     : boolean
-  status : number
-  data  ?: any
-  err   ?: string
+  ok    : boolean
+  data ?: any
+  err  ?: string
 }
 
 export async function getInfo () {
@@ -127,18 +126,20 @@ async function fetchEndpoint(endpoint : string, opt : RequestInit = {}) : Promis
     const { ok, status, statusText } = res
 
     if (!res.ok) {
-      let data
-      try { data = await res.json() } catch { }
-      
+      let data, err
+      try { 
+        data = await res.json() 
+        err  = data.message
+      } catch { err = statusText }
       console.error('Request failed!', status, statusText, data, endpoint, opt, )
-      return { ok, data, status, err : statusText, }
+      return { ok, data, err }
     }
 
-    return { ok, status : 200, data: await res.json() }
+    return { ok, data: await res.json() }
   } catch (err) {
     console.log(err)
     const { message } = err as any
-    return { ok: false, status: 600, err: message }
+    return { ok: false, err: message as string }
   }
 
 }
