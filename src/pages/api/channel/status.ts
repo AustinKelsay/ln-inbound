@@ -30,7 +30,12 @@ async function handler (
       return res.status(200).json({ ok: false, ...data, err })
     }
 
-    return res.status(200).json({ok: true, data: { open_channels, pend_channels } })
+    const data = {
+      open    : open_channels.data,
+      pending : pend_channels.data
+    }
+
+    return res.status(200).json({ ok: true, data })
   } catch(err) { 
     console.error(err)
     res.status(500).end() 
