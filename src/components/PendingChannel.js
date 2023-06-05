@@ -1,10 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Text, VStack, Button, Code } from "@chakra-ui/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { setTxId } from "@/redux/rootReducer";
 
 const PendingChannel = () => {
+  const dispatch = useDispatch();
+
   const amount = useSelector((state) => state.amount);
   const txid = useSelector((state) => state.txid);
+
+  useEffect(() => {
+    const channelStatus = async () => {
+      try {
+        const response = await fetch("/api/channel/status");
+        const data = await response.json();
+        console.log("channelStatus", data);
+
+        if (data.ok && data.data) {
+          dispatch(setTxId(data.data));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const intervalId = setInterval(() => {
+      channelStatus();
+    }, 5000); // Polls every 5 seconds
+
+    return () => {
+      clearInterval(intervalId); // Clean up the interval on unmount
+    };
+  }, []);
+
   return (
     <VStack mt={10} alignItems="center" justifyContent="center" spacing={4}>
       <Text fontSize="l" fontWeight="bold">
