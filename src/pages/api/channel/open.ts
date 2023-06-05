@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { withSessionRoute } from '@/lib/sessions'
-import { getChannels, getPendingChannels } from '@/lib/lnd'
+import { getOpenChannels, getPendingChannels } from '@/lib/lnd'
 
 export default withSessionRoute(handler)
 
@@ -18,7 +18,7 @@ async function handler (
 
     let status, txid
 
-    const { ok, data, err } = await getChannels()
+    const { ok, data, err } = await getOpenChannels()
 
     if (!ok || data === undefined || err !== undefined) {
       return res.status(200).json({ ok: false, err })
@@ -61,10 +61,6 @@ async function handler (
 
       console.log('pending:', pending)
     }
-
-    console.log(txid, status)
-
-
 
     return res.status(200).json({ ok: true, data: { txid, status } })
   } catch(err) {

@@ -38,7 +38,7 @@ export async function getPeers () {
   return fetchEndpoint('/v1/peers')
 }
 
-export async function getChannels () {
+export async function getOpenChannels () {
   return fetchEndpoint('/v1/channels')
 }
 
