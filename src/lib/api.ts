@@ -1,4 +1,4 @@
-import { getPendingChannels, getOpenChannels } from './lnd.js'
+import { getPendingChannels, getOpenChannels } from '@/lib/lnd'
 
 export async function getUserOpenChannels (pubkey : string) {
   const { ok, data, err } = await getOpenChannels()
@@ -36,4 +36,13 @@ export async function getUserPendingChannels (pubkey : string) {
     ok   : true,
     data : pending_channels.filter((e : any) =>  e.channel.remote_node_pub === pubkey)
   }
+}
+
+export async function getFees() {
+  const res = await fetch('https://mempool.space/api/v1/fees/recommended')
+  if (!res.ok) {
+    const { status, statusText } = res
+    throw new Error(`Failed to fetch fee rates: ${status} ${statusText}`)
+  } 
+  return res.json()
 }
