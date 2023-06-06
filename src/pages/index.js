@@ -26,7 +26,7 @@ export default function Home() {
     <main
       className={`flex min-h-screen flex-col items-center justify-even p-12 pt-5`}
     >
-      <div
+      {/* <div
         className={`w-full`}
         style={{
           minHeight: 50,
