@@ -7,7 +7,7 @@ const initialState = {
   invoice: null,
   polling: false,
   paid: false,
-  txid: null,
+  channels: [],
 };
 
 export const lightningSlice = createSlice({
@@ -32,8 +32,8 @@ export const lightningSlice = createSlice({
     setPolling: (state, action) => {
       state.polling = action.payload;
     },
-    setTxId: (state, action) => {
-      state.txid = action.payload;
+    setChannels: (state, action) => {
+      state.channels = action.payload;
     },
   },
 });
@@ -45,7 +45,7 @@ export const {
   setInvoice,
   setPaid,
   setPolling,
-  setTxId,
+  setChannels,
 } = lightningSlice.actions;
 
 export default lightningSlice.reducer;

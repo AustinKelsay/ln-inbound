@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Text, Spinner, Center } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { setTxId } from "@/redux/rootReducer";
+import { setChannels } from "@/redux/rootReducer";
 
 const PendingChannel = () => {
   const dispatch = useDispatch();
@@ -11,6 +11,8 @@ const PendingChannel = () => {
       try {
         const response = await fetch("/api/channel/open");
         const data = await response.json();
+
+        console.log("/api/channel/open", data);
 
         if (data.ok && data.txid) {
           dispatch(setTxId(data.txid));
@@ -28,10 +30,10 @@ const PendingChannel = () => {
       try {
         const response = await fetch("/api/channel/status");
         const data = await response.json();
-        console.log(data);
+        console.log("/api/channel/status", data);
 
         if (data.ok && data.data) {
-          dispatch(setTxId(data.data));
+          dispatch(setChannels(...data.data.pending, ...data.data.open));
         }
       } catch (error) {
         console.error(error);

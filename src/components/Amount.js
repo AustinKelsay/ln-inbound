@@ -29,28 +29,31 @@ const Amount = () => {
 
   const pubkey = useSelector((state) => state.pubkey);
 
+  console.log("pubkey", pubkey);
+
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch(
-      `/api/invoice/request?pubkey=${pubkey}&amount=${sliderValue}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const body = {
+      pubkey: pubkey,
+      amount: sliderValue,
+    };
+
+    const response = await fetch("/api/invoice/request", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
 
     const res = await response.json();
 
     if (res?.data) {
       dispatch(setPolling(true));
-
       dispatch(setInvoice(res.data));
-
       dispatch(setAmount(sliderValue));
     }
   };

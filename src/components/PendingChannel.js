@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Text, VStack, Button, Code } from "@chakra-ui/react";
 import { useSelector, useDispatch } from "react-redux";
-import { setTxId } from "@/redux/rootReducer";
+import { setChannels } from "@/redux/rootReducer";
 
 const PendingChannel = () => {
   const dispatch = useDispatch();
@@ -17,7 +17,7 @@ const PendingChannel = () => {
         console.log("channelStatus", data);
 
         if (data.ok && data.data) {
-          dispatch(setTxId(data.data));
+          dispatch(setChannels(...data.data.pending, ...data.data.open));
         }
       } catch (error) {
         console.error(error);

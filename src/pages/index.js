@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 export default function Home() {
   const invoicePolling = useSelector((state) => state.polling);
   const connected = useSelector((state) => state.connected);
-  const txid = useSelector((state) => state.txid);
+  const channels = useSelector((state) => state.channels);
   const paid = useSelector((state) => state.paid);
 
   const [open, setOpen] = useState(false);
@@ -39,25 +39,19 @@ export default function Home() {
           <span className={`text-5xl font-bold`}>Lightning Inbound</span>
         </Trail>
       </div>
-
       <p>Serving inbound channels to the plebs.</p>
       <br></br>
-
       <NodeInfo />
-
       {!invoicePolling && !paid && (
         <>
           <Connect />
-          {!txid && connected && <Amount />}
+          {!channels && connected && <Amount />}
         </>
       )}
-
-      {!txid && invoicePolling && <Invoice />}
-
-      {paid && !invoicePolling && !txid && <OpeningChannel />}
-
-      {txid && !invoicePolling && <PendingChannel />}
-      {/* <h1>Check back in soon</h1> */}
+      {!channels && invoicePolling && <Invoice />}
+      {paid && !invoicePolling && !channels && <OpeningChannel />}
+      {channels?.length && !invoicePolling && <PendingChannel />} */}
+      <h1>Check back in soon</h1>
     </main>
   );
 }

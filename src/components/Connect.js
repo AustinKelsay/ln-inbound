@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { setConnected, setPubKey, setTxId } from "@/redux/rootReducer";
+import { setConnected, setPubKey, setChannels } from "@/redux/rootReducer";
 
 const Connect = () => {
   const [nodePubkey, setNodePubkey] = useState("");
@@ -50,13 +50,15 @@ const Connect = () => {
 
       const res = await response.json();
 
-      if (res?.data?.pub_key) {
+      console.log("rez", res);
+
+      if (res?.data?.connected) {
         setMessage("Connected");
         setMessageType("success");
 
         dispatch(setConnected(true));
 
-        dispatch(setPubKey(res.data.pub_key));
+        dispatch(setPubKey(nodePubkey));
       } else {
         setMessage("Not connected");
         setMessageType("error");
@@ -67,7 +69,7 @@ const Connect = () => {
       setMessageType("error");
     }
 
-    const res = await fetch('/api/getsession')
+    const res = await fetch("/api/getsession");
 
     try {
       const response = await fetch("/api/channel/status");
@@ -75,7 +77,7 @@ const Connect = () => {
       console.log("here", data);
 
       if (data.ok && data.data) {
-        dispatch(setTxId(data.data));
+        dispatch(setChannels(...data.data.pending, ...data.data.open));
       }
     } catch (error) {
       console.error(error);
