@@ -12,6 +12,9 @@ import {
   Spinner,
   Center,
   Text,
+  RadioGroup,
+  Radio,
+  Stack,
 } from "@chakra-ui/react";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,21 +27,30 @@ const Amount = () => {
   const [feeRate, setFeeRate] = useState(null);
   const [total, setTotal] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [channelFee, setChannelFee] = useState(null);
+  const [feeSelection, setFeeSelection] = useState("hour");
+  const [chainFees, setChainFees] = useState({
+    minimum: null,
+    economy: null,
+    hour: null,
+    halfHour: null,
+    fastest: null,
+  });
 
   const invoicePolling = useSelector((state) => state.polling);
 
   const pubkey = useSelector((state) => state.pubkey);
-
-  console.log("pubkey", pubkey);
 
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("totall", total, pubkey);
+
     const body = {
       pubkey: pubkey,
-      amount: sliderValue,
+      amount: total,
     };
 
     const response = await fetch("/api/invoice/request", {
@@ -60,10 +72,13 @@ const Amount = () => {
 
   useEffect(() => {
     if (baseFee && feeRate) {
-      const calculatedTotal = sliderValue * feeRate + baseFee;
+      // tx fee is the channel fee (assumed channel open tx size) * sats/vB
+      const txFee = chainFees[feeSelection] * channelFee;
+      // Total is channel size * fee rate + baseFee and txFee
+      const calculatedTotal = sliderValue * feeRate + baseFee + txFee;
       setTotal(Math.ceil(calculatedTotal));
     }
-  }, [sliderValue, baseFee, feeRate]);
+  }, [sliderValue, baseFee, feeRate, feeSelection]);
 
   useEffect(() => {
     const fetchRates = async () => {
@@ -71,17 +86,23 @@ const Amount = () => {
         setIsLoading(true);
         const response = await fetch(`/api/getrates`);
         const data = await response.json();
-        console.log(data);
+        console.log("daaaa", data);
 
         if (data?.data) {
           setMaxAmount(data.data.max_size);
           setBaseFee(data.data.base_fee);
-          setFeeRate(data.data.fee_rate);
+          setFeeRate(data.data.sats_fee);
+          setChannelFee(data.data.chan_vbytes);
 
-          // Calculate the total here
-          const calculatedTotal =
-            data.data.base_fee + 20000 * data.data.fee_rate;
-          setTotal(Math.ceil(calculatedTotal));
+          const fees = data.data.chain_fees;
+
+          setChainFees({
+            minimum: fees.minimumFee,
+            economy: fees.economyFee,
+            hour: fees.hourFee,
+            halfHour: fees.halfHourFee,
+            fastest: fees.fastestFee,
+          });
 
           setIsLoading(false);
         }
@@ -173,6 +194,51 @@ const Amount = () => {
         <span>Channel Size: {addCommas(sliderValue)} </span>
         <span>Fee rate: {formatFeeRate(feeRate)}</span>
       </div>
+      <RadioGroup onChange={setFeeSelection} value={feeSelection}>
+        <p className="text-center">Fee selection</p>
+        <Stack direction="row" spacing={4}>
+          <Button
+            colorScheme={feeSelection === "minimum" ? "blue" : "gray"}
+            variant={feeSelection === "minimum" ? "solid" : "outline"}
+            size="sm"
+            onClick={() => setFeeSelection("minimum")}
+          >
+            minimum {chainFees.minimum} sats/vB
+          </Button>
+          <Button
+            colorScheme={feeSelection === "economy" ? "blue" : "gray"}
+            variant={feeSelection === "economy" ? "solid" : "outline"}
+            size="sm"
+            onClick={() => setFeeSelection("economy")}
+          >
+            economy {chainFees.economy} sats/vB
+          </Button>
+          <Button
+            colorScheme={feeSelection === "hour" ? "blue" : "gray"}
+            variant={feeSelection === "hour" ? "solid" : "outline"}
+            size="sm"
+            onClick={() => setFeeSelection("hour")}
+          >
+            average {chainFees.hour} sats/vB
+          </Button>
+          <Button
+            colorScheme={feeSelection === "halfHour" ? "blue" : "gray"}
+            variant={feeSelection === "halfHour" ? "solid" : "outline"}
+            size="sm"
+            onClick={() => setFeeSelection("halfHour")}
+          >
+            fast {chainFees.halfHour} sats/vB
+          </Button>
+          <Button
+            colorScheme={feeSelection === "fastest" ? "blue" : "gray"}
+            variant={feeSelection === "fastest" ? "solid" : "outline"}
+            size="sm"
+            onClick={() => setFeeSelection("fastest")}
+          >
+            very fast {chainFees.fastest} sats/vB
+          </Button>
+        </Stack>
+      </RadioGroup>
       <div
         className={`text-2xl flex-row content-center items-center`}
         style={{ display: "flex", marginTop: "1rem" }}
