@@ -39,7 +39,7 @@ export default function Home() {
           <span className={`text-5xl font-bold`}>Lightning Inbound</span>
         </Trail>
       </div>
-      <p>Serving inbound channels to the plebs.</p>
+      <p className="mb-8">Serving inbound channels to the plebs.</p>
       <br></br>
       <NodeInfo />
       {!invoicePolling && !paid && (
