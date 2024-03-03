@@ -1,5 +1,7 @@
 # Lightning Inbound
 
+## Currently under development updates 🚧
+
 Simple SPA that let's you sell channels and inbound liquidity from your lightning node.  
 
 Built for the Bitcoin++ ATX 2023 hackathon.
